@@ -1,4 +1,8 @@
+require('dotenv').config()
 
+const {SERVER_PORT} = process.env
+const Sequelize = require('sequelize')
+const sequelize = new Sequelize(process.env.CONNECTION_STRING)
 
 module.exports = {
     seed: (req, res) => {
@@ -10,9 +14,13 @@ module.exports = {
                 country_id serial primary key, 
                 name varchar
             );
-
-            *****YOUR CODE HERE*****
-
+SQL query
+        CREATE TABLE cities {
+            city_id SERIAL PRIMARY KEY,
+            name VARCHAR(32) NOT NULL,
+            rating INT NOT NULL,
+            country_id INT NOT NULL
+        }
             insert into countries (name)
             values ('Afghanistan'),
             ('Albania'),
