@@ -1,26 +1,53 @@
 require('dotenv').config()
+const {Country,City} = require("./models")
 
 const {SERVER_PORT} = process.env
-const Sequelize = require('sequelize')
-const sequelize = new Sequelize(process.env.CONNECTION_STRING)
 
 module.exports = {
+
+    getCountries: (req, res) => {
+        Country.findAll({
+            include: [City]
+        })
+                .then((dbRes) => {
+                    res.status(200).send(dbRes)
+                 }).catch((ERR) => console.log(ERR))
+        },
+
+    createCity: (req, res) => {
+        City.create({
+            name: req.body.name, 
+            rating: req.body.rating,
+            country_id: req.body.country_id
+        })       
+        .then((dbRes) => {
+            res.status(200).send(dbRes)
+         }).catch((ERR) => console.log(ERR))
+     },
+
+     getCities: (req, res) => {
+        City.findAll({
+            include: [Country]
+        })
+                .then((dbRes) => {
+                    res.status(200).send(dbRes)
+                 }).catch((ERR) => console.log(ERR))
+        },
+
+    deleteCity: (req, res) => {
+        City.destroy({
+            where: {
+                city_id: req.params.id
+            }
+        })
+        .then((dbRes) => {
+            res.status(200).send("successfully deleted")
+         }).catch((ERR) => console.log(ERR))
+    },
+
     seed: (req, res) => {
         sequelize.query(`
-            drop table if exists cities;
-            drop table if exists countries;
-
-            create table countries (
-                country_id serial primary key, 
-                name varchar
-            );
-SQL query
-        CREATE TABLE cities {
-            city_id SERIAL PRIMARY KEY,
-            name VARCHAR(32) NOT NULL,
-            rating INT NOT NULL,
-            country_id INT NOT NULL
-        }
+         
             insert into countries (name)
             values ('Afghanistan'),
             ('Albania'),
