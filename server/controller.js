@@ -2,7 +2,9 @@ require('dotenv').config()
 const {Country,City} = require("./models")
 const db = require('./db'); // Replace with your actual database module/path
 
-const Sequelize = require('sequelize');
+const Sequelize = require('sequelize')
+const sequelize = new Sequelize(process.env.CONNECTION_STRING)
+
 
 
 const controller = {
